@@ -1,11 +1,11 @@
 #include <unistd.h>
 
-void	ft_putchar(char c)
+void ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
 
-void	ft_putstr(char *str)
+void ft_putstr(char *str)
 {
 	while (*str)
 	{
@@ -14,7 +14,7 @@ void	ft_putstr(char *str)
 	}
 }
 
-void	ft_rev_int_tab(int *tab, int size)
+void ft_rev_int_tab(int *tab, int size)
 {
 	int	i;
 	int	temp;

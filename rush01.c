@@ -40,20 +40,24 @@ int	check_line(int grid[4][4], int index, int *constraint, int is_col)
 	int	i;
 	int	line[4];
 
-	for (i = 0; i < 4; i++)
-		line[i] = is_col ? grid[i][index] : grid[index][i];
-
+	i = 0;
+	while (i < 4)
+	{
+		if (is_col)
+			line[i] = grid[i][index];
+		else
+			line[i] = grid[index][i];
+		i++;
+	}
 	if (count_visible(line) != (is_col ? constraint[index] : constraint[8 + index]))
-		return 0;
-
+		return (0);
 	ft_rev_int_tab(line, 4);
 	if (count_visible(line) != (is_col ? constraint[4 + index] : constraint[12 + index]))
-		return 0;
-
-	return 1;
+		return (0);
+	return (1);
 }
 
-void	print_grid(int grid[4][4])
+void print_grid(int grid[4][4])
 {
 	int	i;
 	int	j;

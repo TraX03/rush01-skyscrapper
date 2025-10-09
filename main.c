@@ -1,16 +1,16 @@
 #include <stdlib.h>
 #include "rush01.h"
 
-int	*parse_input(char *str, int num)
+int	*parse_input(char *str, int total)
 {
 	int	*arr;
 	int	i;
 
 	i = 0;
-	arr = malloc(num * sizeof(int));
+	arr = malloc(total * sizeof(int));
 	if (!arr)
 		return (NULL);
-	while (*str && i < num) 
+	while (*str && i < total) 
 	{
 		if (*str >= '1' && *str <= '4')
 		{
@@ -21,7 +21,7 @@ int	*parse_input(char *str, int num)
 			return (free(arr), NULL);
 		str++;
 	}
-	if (i != num)
+	if (i != total)
 		return (free(arr), NULL);
 	return (arr);
 }
