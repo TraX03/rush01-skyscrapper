@@ -1,48 +1,97 @@
 #include <stdlib.h>
 #include "rush01.h"
 
-int	*parse_input(char *str, int total)
-{
-	int	*arr;
-	int	i;
+int g_size;
 
-	i = 0;
-	arr = malloc(total * sizeof(int));
-	if (!arr)
-		return (NULL);
-	while (*str && i < total) 
-	{
-		if (*str >= '1' && *str <= '4')
-		{
-			if(*(str + 1) >= '0' && *(str + 1) <= '9')
-				return (free(arr), NULL);
-			arr[i++] = *str - '0';
-		} else if (*str != ' ')
-			return (free(arr), NULL);
-		str++;
-	}
-	if (i != total)
-		return (free(arr), NULL);
-	return (arr);
+int *parse_input(char *str, int total)
+{
+    int *arr;
+    int i = 0;
+
+    arr = malloc(total * sizeof(int));
+    if (!arr)
+        return (NULL);
+    while (*str && i < total)
+    {
+        if (*str >= '1' && *str <= ('0' + g_size))
+        {
+            if (*(str + 1) >= '0' && *(str + 1) <= '9')
+                return (free(arr), NULL);
+            arr[i++] = *str - '0';
+        }
+        else if (*str != ' ')
+            return (free(arr), NULL);
+        str++;
+    }
+    if (i != total)
+        return (free(arr), NULL);
+    return (arr);
 }
 
-// row = height
-// col = width
-int	main(int argc, char **argv)
+int **malloc_grid(void)
 {
-	int	grid[4][4] = {0};
-	int	*constraint;
+    int **grid;
+    int i;
 
-	if (argc == 2)
+    grid = malloc(g_size * sizeof(int *));
+    if (!grid)
+        return (NULL);
+	i = 0;
+    while (i < g_size)
+    {
+        grid[i] = malloc(g_size * sizeof(int));
+        if (!grid[i])
+        {
+            while (--i >= 0)
+                free(grid[i]);
+            free(grid);
+            return (NULL);
+        }
+		i++;
+    }
+    return (grid);
+}
+
+void free_grid(int **grid)
+{
+    int i;
+
+    if (!grid)
+        return;
+	i = 0;
+    while (i < g_size)
 	{
-		constraint = parse_input(argv[1], 16);
-		if (constraint)
-		{
-			if (rush01(grid, 0, 0, constraint))
-				return (free(constraint), 0);
-			free(constraint);
-		}
+        free(grid[i]);
+		i++;
 	}
-	ft_putstr("Error\n");
-	return (0);
+    free(grid);
+}
+
+int main(int argc, char **argv)
+{
+    int **grid;
+    int *constraint;
+
+    if (argc == 3)
+    {
+        if (*argv[1] < '2' || *argv[1] > '9')
+            return (ft_putstr("Error: Invalid grid size (must be 2–9)\n"), 1);
+        g_size = *argv[1] - '0';
+        constraint = parse_input(argv[2], g_size * 4);
+        if (!constraint)
+            return (ft_putstr("Error: Invalid input format\n"), 1);
+        grid = malloc_grid();
+        if (!grid)
+        {
+            ft_putstr("Error: Memory allocation failed\n");
+            return (free(constraint), 1);
+        }
+        if (!rush01(grid, 0, 0, constraint))
+            ft_putstr("Error: No solution found\n");
+        free(constraint);
+        free_grid(grid);
+        return (0);
+    }
+    ft_putstr("Usage: ./rush01 [grid size 2–9] [constraints]\n");
+    return (1);
 }
