@@ -1,5 +1,5 @@
 # Project Overview<br> 
-Rush01 is a logic-based solver for the Skyscraper Puzzle, a game played on an N×N grid (supporting grid sizes from 2×2 up to 9×9).
+A logic-based solver for the Skyscraper Puzzle, a game played on an N×N grid (supporting grid sizes from 2×2 up to 9×9).
 Each cell contains a number from 1 to N, representing building heights.
 The goal is to fill the grid so that all logic and visibility clues are satisfied.
 
